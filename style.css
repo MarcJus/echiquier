@@ -1,10 +1,12 @@
 body{
     background-color: #1B1B1B;
+    color: white;
 }
 
 .board{
     display: grid;
-    width: max-content;
+    width: 500px;
+    height: 500px;
     margin: 100px auto;
     border: 1px solid black;
     grid-template-rows: repeat(8, auto);
@@ -12,10 +14,13 @@ body{
 }
 
 .square{
-    width: 50px;
-    height: 50px;
+    width: auto;
+    height: auto;
     position: relative;
     cursor: default;
+    user-select: none;
+    font-family: sans-serif;
+    font-size: 13px;
 }
 
 .black{
@@ -31,7 +36,7 @@ body{
     right: 7%;
     bottom: 0;
     width: max-content;
-    // border: 1px solid greenyellow;
+    /*border: 1px solid greenyellow;*/
 }
 
 .square .row{
@@ -39,12 +44,28 @@ body{
     left: 5%;
     top: 0;
     width: max-content;
-    //border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 
 .square .index{
     position: absolute;
     right: 0;
     top: 0;
+    color: red;
+}
+
+.black-text{
+    color: rgb(129, 71, 71);
+}
+
+.white-text{
+    color: #fefee2;
+}
+
+.piece{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: red;
 }
