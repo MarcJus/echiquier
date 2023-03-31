@@ -5,31 +5,49 @@ board.on("contextmenu", e => {
 let move = $("input[name=move]:checked").val()
 let first_square = "white";
 const lettres = ["a", "b", "c", "d", "e", "f", "g", "h"]
+const fen_starting_position = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-draw_chessboard(move)
+const pieces_letters = {
+    rook: "R",
+    knight: "N",
+    bishop: "B",
+    queen: "Q",
+    king: "K",
+    pawn: "P"
+}
+
+draw_chessboard(move, fen_starting_position)
 
 $("form input").on("change", () => {
     move = $("input[name=move]:checked").val()
     console.log(move);
     board.empty();
-    draw_chessboard(move);
+    draw_chessboard(move, fen_starting_position);
 })
 
-function draw_chessboard(color){
+function draw_chessboard(color, fen){
+
+    const fen_position_description = fen.split(" ")[0];
+    const fen_rows = fen_position_description.split("/");
 
     for(let i = 0; i < 64; i++){
         const row = color === "white" ? Math.ceil((64 - i) / 8) : Math.floor((i + 8) / 8);
-        const column = color === "white" ? lettres[i % 8] : lettres[7 - (i % 8)];
+        const column = color === "white" ? i % 8 : 7 - (i % 8);
         let square = $("<div>", {
             class: "square"
         })
-        square.append($("<div>", {
-            text: "C",
-            class: "piece"
-        }))
+
+        const current_fen_row = fen_rows[8-row];
+        const piece = current_fen_row[column];
+        if(isNaN(piece) && piece !== undefined){
+            console.log(piece);
+            square.append($("<div>", {
+                text: piece,
+                class: "piece"
+            }))
+        }
         if(i % 8 === 0){ // rows
             square.append($("<div>", {
-                // text: color === "white" ? (64 - i) / 8 : (8+i) / 8,
                 text: row,
                 class: "row"
             }));
