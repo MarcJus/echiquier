@@ -16,14 +16,18 @@ const pieces_letters = {
     pawn: "P"
 }
 
+let fen_empty_square = 0;
+let fen_empty_square_count = 0;
+
 draw_chessboard(move, fen_starting_position)
 
-$("form input").on("change", () => {
+$("form input").on("change", () => { // détecte le changement de couleur
     move = $("input[name=move]:checked").val()
     console.log(move);
     board.empty();
     draw_chessboard(move, fen_starting_position);
 })
+
 
 function draw_chessboard(color, fen){
 
@@ -33,24 +37,18 @@ function draw_chessboard(color, fen){
     for(let i = 0; i < 64; i++){
         const row = color === "white" ? Math.ceil((64 - i) / 8) : Math.floor((i + 8) / 8);
         const column = color === "white" ? i % 8 : 7 - (i % 8);
+
         let square = $("<div>", {
             class: "square"
         })
 
-        const current_fen_row = fen_rows[8-row];
-        const piece = current_fen_row[column];
-        if(isNaN(piece) && piece !== undefined){
-            console.log(piece);
-            square.append($("<div>", {
-                text: piece,
-                class: "piece"
-            }))
-        }
         if(i % 8 === 0){ // rows
             square.append($("<div>", {
                 text: row,
                 class: "row"
             }));
+            fen_empty_square = 0;
+            fen_empty_square_count = 0;
         }
         if(i > 55){
             square.append($("<div>", { // column
@@ -58,6 +56,27 @@ function draw_chessboard(color, fen){
                 class: "column"
             }));
         }
+
+        const current_fen_row = fen_rows[8-row];
+        const piece = current_fen_row[column];
+
+        if(!isNaN(piece) && fen_empty_square === 0){
+            fen_empty_square = piece;
+            console.log(fen_empty_square);
+        }
+
+        console.log(fen_empty_square_count);
+
+        // if(isNaN(piece) && piece !== undefined){
+        //     square.append($("<div>", {
+        //         text: piece,
+        //         class: "piece"
+        //     }))
+        // }
+
+        while(fen_empty_square !== fen_empty_square_count)
+            fen_empty_square_count++;
+
         let square_name = "";
         square_name += column;
         square_name += row;
